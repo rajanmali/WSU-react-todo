@@ -3,6 +3,5 @@ $white: #ffffff;
 $black: #262223;
 $highlight-orange: #ff5c5e;
 
-body {
-  background-color: $crimson;
-}
+@import './components/AddItem.scss';
+@import './components/ItemList.scss';

@@ -1,0 +1,14 @@
+.add-item--wrapper {
+  background-color: $white;
+  padding: 1rem 2rem;
+  margin: 2rem 0;
+  border-radius: 0.5rem;
+
+  .add-item--input {
+    font-size: 1.8em;
+  }
+
+  .add-item--button {
+    background-color: $crimson;
+  }
+}
