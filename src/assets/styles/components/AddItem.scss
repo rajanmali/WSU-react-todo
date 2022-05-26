@@ -10,5 +10,10 @@
 
   .add-item--button {
     background-color: $crimson;
+    border: 1px solid transparent;
+
+    &:focus {
+      box-shadow: 0 0 0.25rem 0.25rem $highlight-orange !important;
+    }
   }
 }
