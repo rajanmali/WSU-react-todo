@@ -1,7 +1,7 @@
 .item-list--wrapper {
-  background-color: $white;
+  background-color: #f2f2f2;
+  padding: 10px 21px;
   border-radius: 0.5rem;
-  padding: 1rem 2rem;
 
   .item-list--header {
     display: flex;
@@ -10,6 +10,10 @@
     border-bottom: 0.1rem solid #898687;
     margin-bottom: 2rem;
     padding-bottom: 0.5rem;
+
+    h1 {
+      font-size: 29px;
+    }
 
     .item-list--clear_button {
       background-color: $highlight-orange;

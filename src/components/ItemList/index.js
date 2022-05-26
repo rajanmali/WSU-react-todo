@@ -5,7 +5,7 @@ const ItemList = ({ taskList, handleTaskComplete, handleClearAllTask }) => {
   return (
     <section className="item-list--wrapper">
       <div className="item-list--header">
-        <h2>To Do List</h2>
+        <h1>To Do List</h1>
         <Button
           className="item-list--clear_button"
           onClick={handleClearAllTask}

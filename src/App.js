@@ -52,8 +52,8 @@ const App = () => {
 
   return (
     <div className="container">
-      <Row>
-        <Col>
+      <Row className="d-flex justify-content-center">
+        <Col lg={4}>
           <AddItem
             currentTask={currentTask}
             handleChange={handleChange}

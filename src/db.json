@@ -1,0 +1,7 @@
+{
+  "tasks": [
+    { "key": 0, "value": "task1", "completed": false },
+    { "key": 1, "value": "task2", "completed": true },
+    { "key": 2, "value": "task3", "completed": false }
+  ]
+}
