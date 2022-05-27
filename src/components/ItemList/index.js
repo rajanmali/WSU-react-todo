@@ -1,7 +1,12 @@
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-const ItemList = ({ taskList, handleTaskComplete, handleClearAllTask }) => {
+const ItemList = ({
+  loading,
+  taskList,
+  handleTaskComplete,
+  handleClearAllTask,
+}) => {
   return (
     <section className="item-list--wrapper">
       <div className="item-list--header">
@@ -13,26 +18,31 @@ const ItemList = ({ taskList, handleTaskComplete, handleClearAllTask }) => {
           Clear
         </Button>
       </div>
-      <ul>
-        {taskList.map((task) => (
-          <Form.Check
-            type="checkbox"
-            key={task.key}
-            id={`default-checkbox--${task.key}`}
-          >
-            <Form.Check.Input
-              type="checkbox"
-              checked={task.completed}
-              onChange={() => handleTaskComplete(task.key)}
-            />
-            <Form.Check.Label
-              className={task.completed ? 'item-list__complete' : ''}
-            >
-              {task.value}
-            </Form.Check.Label>
-          </Form.Check>
-        ))}
-      </ul>
+      {loading ? (
+        <h3>Loading To-Do List</h3>
+      ) : (
+        <ul>
+          {taskList?.[0] &&
+            taskList.map((task) => (
+              <Form.Check
+                type="checkbox"
+                key={task.id}
+                id={`default-checkbox--${task.id}`}
+              >
+                <Form.Check.Input
+                  type="checkbox"
+                  checked={task.completed}
+                  onChange={() => handleTaskComplete(task.id)}
+                />
+                <Form.Check.Label
+                  className={task.completed ? 'item-list__complete' : ''}
+                >
+                  {task.value}
+                </Form.Check.Label>
+              </Form.Check>
+            ))}
+        </ul>
+      )}
     </section>
   );
 };

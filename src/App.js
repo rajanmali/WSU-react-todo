@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,11 +10,13 @@ import ItemList from './components/ItemList';
 
 const App = () => {
   const [currentTask, setCurrentTask] = useState('');
-  const [taskList, setTaskList] = useState([
-    { key: 0, value: 'task1', completed: false },
-    { key: 1, value: 'task2', completed: true },
-    { key: 2, value: 'task3', completed: false },
-  ]);
+  const [loading, setLoading] = useState(true);
+  const [taskList, setTaskList] = useState([]);
+
+  useEffect(() => {
+    // Fetch all task list fron json-server
+    fetchTasks();
+  }, []);
 
   const handleChange = (e) => {
     setCurrentTask(e.target.value);
@@ -25,28 +28,65 @@ const App = () => {
     if (!currentTask) {
       alert('Please enter the name for the new To Do item');
     } else {
-      setTaskList((prevTaskList) => [
-        ...prevTaskList,
-        { key: prevTaskList.length + 1, value: currentTask, completed: false },
-      ]);
+      // Call add task function to update db.json
+      addTasks({
+        id: taskList.length + 1,
+        value: currentTask,
+        completed: false,
+      });
       setCurrentTask('');
     }
   };
 
-  const handleTaskComplete = (taskKey) => {
-    setTaskList((prevTaskList) =>
-      prevTaskList.map((task) =>
-        task.key === taskKey ? { ...task, completed: !task.completed } : task
-      )
-    );
+  const handleTaskComplete = (taskId) => {
+    const patchTask = taskList.find((task) => task.id === taskId);
+    updateTask(taskId, { ...patchTask, completed: !patchTask.completed });
   };
 
   const handleClearAllTask = (e) => {
     e.preventDefault();
     if (taskList.length > 0) {
-      setTaskList([]);
+      deleteAllTasks();
     } else {
       alert('Cannot clear list with no tasks. Try entering a task first.');
+    }
+  };
+
+  const fetchTasks = async () => {
+    try {
+      const res = await axios.get('http://localhost:3004/tasks');
+      res.data?.[0] ? setTaskList(res.data) : setTaskList([]);
+      setLoading(false);
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
+  const addTasks = async (task) => {
+    try {
+      await axios.post('http://localhost:3004/tasks', task);
+      fetchTasks();
+    } catch (err) {
+      console.log(err.response.data);
+    }
+  };
+
+  const updateTask = async (id, task) => {
+    try {
+      await axios.put(`http://localhost:3004/tasks/${id}`, task);
+      fetchTasks();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const deleteAllTasks = async () => {
+    try {
+      const res = await axios.delete('http://localhost:3004/tasks');
+      console.log(res);
+      fetchTasks();
+    } catch (err) {
+      console.log(err);
     }
   };
 
@@ -60,6 +100,7 @@ const App = () => {
             handleAddTask={handleAddTask}
           />
           <ItemList
+            loading={loading}
             taskList={taskList}
             handleTaskComplete={handleTaskComplete}
             handleClearAllTask={handleClearAllTask}
